@@ -25,7 +25,8 @@ const createContentDigest = obj =>
 function processDatum(
   datum,
   createNodeId,
-  sourceInstanceName = "__PROGRAMMATIC__"
+  sourceInstanceName = "__PROGRAMMATIC__",
+  other = {}
 ) {
   return {
     id: createNodeId(datum.uid),
@@ -44,7 +45,8 @@ function processDatum(
     internal: {
       type: "Ical",
       contentDigest: createContentDigest(datum)
-    }
+    },
+    other: other
   };
 }
 
@@ -53,7 +55,7 @@ exports.sourceNodes =
   (function() {
     var _ref = (0, _asyncToGenerator2.default)(function*(
       { actions, createNodeId },
-      { url, name }
+      { url, name, other }
     ) {
       const createNode = actions.createNode;
       const data = yield fromURL(url, {});
@@ -66,7 +68,7 @@ exports.sourceNodes =
         const datum = data[id];
 
         if (datum.type === "VEVENT") {
-          createNode(processDatum(datum, createNodeId, name));
+          createNode(processDatum(datum, createNodeId, name, other));
         }
       }
     });
