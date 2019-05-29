@@ -2,6 +2,7 @@ require("util.promisify/shim")();
 const util = require("util");
 const ical = require("node-ical");
 const crypto = require("crypto");
+const moment = require("moment-timezone");
 
 const fromURL = util.promisify(ical.fromURL);
 
@@ -22,9 +23,9 @@ function processDatum(
     parent: null,
     type: datum.type,
     uid: datum.uid,
-    dtstamp: new Date(datum.dtstamp),
-    start: new Date(datum.start),
-    end: new Date(datum.end),
+    dtstamp: moment.tz(datum.dtstamp, "America/Chicago").toDate(), //new Date(datum.dtstamp),
+    start: moment.tz(datum.start, "America/Chicago").toDate(), //new Date(datum.start),
+    end: moment.tz(datum.end, "America/Chicago").toDate(), //new Date(datum.end),
     summary: datum.summary,
     location: datum.location,
     description: datum.description,
